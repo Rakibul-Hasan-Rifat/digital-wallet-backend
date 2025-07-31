@@ -23,6 +23,8 @@ const startServer = async () => {
     }
 }
 
+startServer();
+
 process.on("unhandledRejection", (err) => {
     console.log("Unhandled Rejection Error", err);
     
@@ -66,5 +68,3 @@ process.on("SIGINT", (err) => {
     }
     process.exit(1);
 })
-
-startServer();
