@@ -4,7 +4,10 @@ interface IResData<T> {
     success: boolean
     statusCode: number
     message: string
-    data: T
+    data: T,
+    meta?: {
+        total: number
+    }
 }
 
 const responseSernder = <T>(res: Response, resData: IResData<T>) => {

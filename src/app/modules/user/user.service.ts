@@ -1,8 +1,7 @@
-import bcrypt from "bcryptjs";
-import AppError from "../../utils/AppError";
-import IUser from "./user.interface";
 import User from "./user.model";
-import environmentVariables from "../../config/env.config";
+import IUser from "./user.interface";
+import AppError from "../../utils/AppError";
+import walletServices from "../wallet/wallet.service";
 
 const createUserService = async (payload: Partial<IUser>) => {
   console.log(payload);
@@ -34,14 +33,18 @@ const createUserService = async (payload: Partial<IUser>) => {
 
   const user = await User.create(payload);
 
-  const { password, ...userInfo } = user.toObject();
+  const wallet = await walletServices.createWalletService({ owner: user._id });
 
-  return userInfo;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { password: _, ...userInfo } = user.toObject();
+
+  return { user: userInfo, wallet };
 };
 
 const getUserService = async () => {
   const users = await User.find();
-  return users;
+  const userCount = await User.countDocuments();
+  return {users, userCount};
 };
 
 const updateUserService = async (userId: string, payload: Partial<IUser>) => {

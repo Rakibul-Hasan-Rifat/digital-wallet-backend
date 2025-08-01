@@ -35,8 +35,6 @@ const logoutController = asyncCatch(async (req: Request, res: Response) => {
     httpOnly: true,
     sameSite: "lax"
   })
-
-  console.log(req.cookies.accessToken, req.cookies.refreshToken);
   
   responseSernder(res, {
     success: true,
