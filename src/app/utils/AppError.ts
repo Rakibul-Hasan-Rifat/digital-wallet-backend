@@ -3,6 +3,7 @@ class AppError extends Error {
 
     constructor(statusCode: number, message: string, stack = "") {
         super(message)
+        this.message = message;
         this.statusCode = statusCode;
 
         if (stack) {
