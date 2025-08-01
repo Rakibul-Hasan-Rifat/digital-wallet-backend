@@ -5,26 +5,29 @@ import responseSernder from "../../utils/reponseSender";
 
 const createUserController = asyncCatch(
   async (req: Request, res: Response, next: NextFunction) => {
-    const user = await userServices.createUserService(req.body);
+    const result = await userServices.createUserService(req.body);
 
     responseSernder(res, {
       success: true,
       statusCode: 201,
       message: "User create successfully!",
-      data: user,
+      data: result,
     });
   }
 );
 
 const getAllUsersController = asyncCatch(
   async (req: Request, res: Response, next: NextFunction) => {
-    const users = await userServices.getUserService();
+    const result = await userServices.getUserService();
 
     responseSernder(res, {
       success: true,
       statusCode: 200,
       message: "User retrieved successfully!",
-      data: users,
+      data: result.users,
+      meta: {
+        total: result.userCount
+      }
     });
   }
 );
