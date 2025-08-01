@@ -5,6 +5,8 @@ import route from "./app/router";
 
 const app: Application = express();
 
+app.use(express.json());
+
 app.use("/api/v1", route);
 
 app.get("/", (req: Request, res: Response) => {
