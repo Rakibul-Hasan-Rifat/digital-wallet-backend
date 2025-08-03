@@ -1,5 +1,3 @@
-import { Schema } from "mongoose"
-
 export enum Role {
     ADMIN = "ADMIN",
     AGENT = "AGENT",

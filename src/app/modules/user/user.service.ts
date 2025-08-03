@@ -7,7 +7,6 @@ import walletServices from "../wallet/wallet.service";
 import environmentVariables from "../../config/env.config";
 
 const createUserService = async (payload: Partial<IUser>) => {
-  console.log(payload);
 
   if (!payload.email) {
     throw new AppError(400, "Email is not provided!");

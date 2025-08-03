@@ -1,7 +1,5 @@
 import { Router } from "express";
 import {
-  walletZodSchemaToAddMoney,
-  walletZodSchemaToCreate,
   walletZodSchemaToUpdate,
 } from "./wallet.validation";
 import requestValidator from "../../middlewares/requestValidator";

@@ -1,11 +1,10 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import asyncCatch from "../../utils/asyncCatch";
 import transactionServices from "./transaction.service";
 import responseSernder from "../../utils/reponseSender";
 
 const createTransactionController = asyncCatch(
-  async (req: Request, res: Response, next: NextFunction) => {
-    console.log("create transaction controller", req.user);
+  async (req: Request, res: Response) => {
 
     const result = await transactionServices.createTransactionService(
       req.body,
@@ -22,7 +21,7 @@ const createTransactionController = asyncCatch(
 );
 
 const getAllTransactionController = asyncCatch(
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response) => {
     const result = await transactionServices.getAllTransactionService();
 
     responseSernder(res, {
@@ -36,7 +35,7 @@ const getAllTransactionController = asyncCatch(
 );
 
 const getMyTransactionController = asyncCatch(
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response) => {
     const result = await transactionServices.getMyTransactionService(req.params.id);
 
     responseSernder(res, {
