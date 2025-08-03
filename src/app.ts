@@ -1,3 +1,4 @@
+import cors from "cors";
 import cookieParser from "cookie-parser";
 import express, { Application, Request, Response } from "express";
 import route from "./app/router";
@@ -8,6 +9,10 @@ const app: Application = express();
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors({
+    credentials: true
+}))
+app.set("trust proxy", 1);
 
 app.use("/api/v1", route);
 

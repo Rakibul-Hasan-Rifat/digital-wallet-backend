@@ -1,4 +1,5 @@
 import { Response } from "express";
+import environmentVariables from "../config/env.config";
 
 interface Tokens {
   accessToken: string;
@@ -8,16 +9,16 @@ interface Tokens {
 const setCookie = (res: Response, tokens: Tokens) => {
   if (tokens.accessToken) {
     res.cookie("accessToken", tokens.accessToken, {
-      secure: false,
       httpOnly: true,
-      sameSite: "lax",
+      secure: environmentVariables.NODE_ENV === "production",
+      sameSite: environmentVariables.NODE_ENV === "production" ? "none" : "none",
     });
   }
   if (tokens.refreshToken) {
     res.cookie("refreshToken", tokens.refreshToken, {
-      secure: false,
       httpOnly: true,
-      sameSite: "lax",
+      secure: environmentVariables.NODE_ENV === "production",
+      sameSite: environmentVariables.NODE_ENV === "production" ? "none" : "none",
     });
   }
 };
