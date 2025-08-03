@@ -1,10 +1,10 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import asyncCatch from "../../utils/asyncCatch";
 import userServices from "./user.service";
 import responseSernder from "../../utils/reponseSender";
 
 const createUserController = asyncCatch(
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response) => {
     const result = await userServices.createUserService(req.body);
 
     responseSernder(res, {
@@ -17,7 +17,7 @@ const createUserController = asyncCatch(
 );
 
 const getAllUsersController = asyncCatch(
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response) => {
     const result = await userServices.getUserService();
 
     responseSernder(res, {
@@ -32,9 +32,25 @@ const getAllUsersController = asyncCatch(
   }
 );
 
+const getAllAgentsController = asyncCatch(
+  async (req: Request, res: Response) => {
+    const result = await userServices.getAgentService();
+
+    responseSernder(res, {
+      success: true,
+      statusCode: 200,
+      message: "User retrieved successfully!",
+      data: result.users,
+      meta: {
+        total: result.userCount
+      }
+    });
+  }
+);
+
 const updateUserController = asyncCatch(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const users = await userServices.updateUserService(req.params.id, req.body);
+  async (req: Request, res: Response) => {
+    const users = await userServices.updateUserService(req.params.id, req.body, req.user);
 
     responseSernder(res, {
       success: true,
@@ -46,7 +62,7 @@ const updateUserController = asyncCatch(
 );
 
 const deleteUserController = asyncCatch(
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response) => {
     const result = await userServices.deleteUserService(req.params.id);
 
     responseSernder(res, {
@@ -62,7 +78,8 @@ const userControllers = {
   createUserController,
   getAllUsersController,
   updateUserController,
-  deleteUserController
+  deleteUserController,
+  getAllAgentsController
 };
 
 export default userControllers;

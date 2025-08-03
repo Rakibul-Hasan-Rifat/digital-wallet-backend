@@ -12,7 +12,7 @@ const getAllWalletService = async () => {
   return { wallets, walletCount };
 };
 
-const createWalletService = async (payload: IWallet) => {
+const createWalletService = async (payload: Partial<IWallet>) => {
   const isWalletAvailable = await Wallet.findOne({ owner: payload.owner });
 
   if (isWalletAvailable) {
@@ -42,6 +42,9 @@ const updateWalletService = async (
   payload: Partial<IWallet>,
   decodedUser: JwtPayload
 ) => {
+  if (!walletId) {
+    throw new AppError(400, `UserID as request-param is not found to update.`);
+  }
   const isWalletAvailable = await Wallet.findById(walletId);
 
   if (!isWalletAvailable) {
@@ -52,19 +55,17 @@ const updateWalletService = async (
   }
 
   if (payload.isBlocked) {
-    if (decodedUser.role === Role.USER) {
+    if (decodedUser.role !== Role.ADMIN) {
       throw new AppError(403, "You are not authorized.");
     }
-  }
+  }  
 
-  if (payload.balance) {
-    if (
-      isWalletAvailable.owner !== decodedUser._id ||
-      decodedUser.role !== Role.AGENT
-    ) {
-      throw new AppError(403, "You are not authorized.");
-    }
-  }
+  const updatedWallet = await Wallet.findByIdAndUpdate(walletId, payload, {
+    new: true,
+    runValidators: true,
+  });
+
+  return updatedWallet;
 };
 
 const addMoneyToWalletService = async (
@@ -79,7 +80,7 @@ const addMoneyToWalletService = async (
       404,
       "The wallet with this id is not found in database to update."
     );
-  }  
+  }
 
   if (
     isWalletAvailable.owner !== decodedUser._id &&
@@ -88,12 +89,15 @@ const addMoneyToWalletService = async (
     throw new AppError(403, "You are not authorized.");
   }
 
-  const updatedWallet = await Wallet.findByIdAndUpdate(walletId, {
-    $inc: { balance: payload.amount },
-  }, {runValidators: true, new: true});
+  const updatedWallet = await Wallet.findByIdAndUpdate(
+    walletId,
+    {
+      $inc: { balance: payload.amount },
+    },
+    { runValidators: true, new: true }
+  );
 
   return updatedWallet;
-
 };
 
 const withdrawMoneyFromWalletService = async (
@@ -108,7 +112,7 @@ const withdrawMoneyFromWalletService = async (
       404,
       "The wallet with this id is not found in database to update."
     );
-  }  
+  }
 
   if (
     isWalletAvailable.owner !== decodedUser._id &&
@@ -117,12 +121,15 @@ const withdrawMoneyFromWalletService = async (
     throw new AppError(403, "You are not authorized.");
   }
 
-  const updatedWallet = await Wallet.findByIdAndUpdate(walletId, {
-    $inc: { balance: -payload.amount },
-  }, {runValidators: true, new: true});
+  const updatedWallet = await Wallet.findByIdAndUpdate(
+    walletId,
+    {
+      $inc: { balance: -payload.amount },
+    },
+    { runValidators: true, new: true }
+  );
 
   return updatedWallet;
-
 };
 
 const deleteWalletService = async (walletId: string) => {
@@ -135,6 +142,6 @@ const walletServices = {
   updateWalletService,
   deleteWalletService,
   addMoneyToWalletService,
-  withdrawMoneyFromWalletService
+  withdrawMoneyFromWalletService,
 };
 export default walletServices;

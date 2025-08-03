@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 import { model, Schema } from "mongoose";
-import IUser, { Role, AuthProvider } from "./user.interface";
+import IUser, { Role, AuthProvider, AgentStatus } from "./user.interface";
 import environmentVariables from "../../config/env.config";
 
 const authProviderSchema = new Schema<AuthProvider>(
@@ -22,9 +22,8 @@ const userSchema = new Schema<IUser>(
     password: String,
     role: { type: String, enum: Object.values(Role), default: Role.USER },
     isActive: { type: Boolean, default: true },
-    balance: { type: Number },
-    walletId: { type: Schema.Types.ObjectId, ref: "Wallet" },
     authProvider: [authProviderSchema],
+    agentStatus: {type: String, enum: Object.values(AgentStatus), default: null}
   },
   {
     timestamps: true,
