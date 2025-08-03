@@ -24,7 +24,6 @@ const authCredentialsLoginController = asyncCatch(
 );
 
 const logoutController = asyncCatch(async (req: Request, res: Response) => {
-  console.log(req.cookies.accessToken, req.cookies.refreshToken);
   res.clearCookie("accessToken", {
     secure: false,
     httpOnly: true,
