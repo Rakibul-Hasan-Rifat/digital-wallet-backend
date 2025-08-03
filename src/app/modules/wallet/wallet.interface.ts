@@ -1,9 +1,9 @@
 import { Schema } from "mongoose";
 
 interface IWallet {
-  _id?: Schema.Types.ObjectId;
-  owner: Schema.Types.ObjectId;
-  balance?: number;
+  _id?: string;
+  owner: string;
+  balance: number;
   isBlocked?: boolean;
   transactionHistory?: Schema.Types.ObjectId[];
 }

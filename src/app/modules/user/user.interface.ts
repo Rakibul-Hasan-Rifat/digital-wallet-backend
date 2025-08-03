@@ -11,17 +11,21 @@ export interface AuthProvider {
     providerId: string
 }
 
+export enum AgentStatus {
+    SUSPENDED = "SUSPENDED",
+    APPROVED = "APPROVED"
+}
+
 interface IUser {
-    _id?: Schema.Types.ObjectId
+    _id?: string
     name: string
     email: string
     password?: string
     phone?: string
     role: Role
     isActive: boolean
-    balance: number
-    walletId?: Schema.Types.ObjectId
     authProvider: AuthProvider[]
+    agentStatus?: AgentStatus
 }
 
 export default IUser;

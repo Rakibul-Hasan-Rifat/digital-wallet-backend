@@ -7,7 +7,7 @@ const walletSchema = new Schema<IWallet>(
     balance: { type: Number, default: 50 },
     isBlocked: { type: Boolean, default: false },
     transactionHistory: [
-      { type: Schema.Types.ObjectId, ref: "Transaction", default: [] },
+      { type: String, ref: "Transaction", default: [] },
     ],
   },
   {

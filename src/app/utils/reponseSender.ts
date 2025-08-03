@@ -15,7 +15,8 @@ const responseSernder = <T>(res: Response, resData: IResData<T>) => {
         success: resData.success,
         statusCode: resData.statusCode,
         message: resData.message,
-        data: resData.data
+        meta: resData.meta,  
+        data: resData.data,
     })
 }
 

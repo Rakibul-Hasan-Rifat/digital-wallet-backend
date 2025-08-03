@@ -13,5 +13,5 @@ export const walletZodSchemaToAddMoney = z.object({
 
 export const walletZodSchemaToUpdate = z.object({
   balance: z.number().optional(),
-  isBlokced: z.boolean().optional(),
+  isBlocked: z.boolean().optional(),
 });

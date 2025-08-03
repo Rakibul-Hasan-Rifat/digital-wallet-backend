@@ -11,30 +11,35 @@ import { Role } from "../user/user.interface";
 
 const walletRoute = Router();
 
-walletRoute.get("/", walletControllers.getWalletController);
-
-walletRoute.post(
-  "/create",
-  requestValidator(walletZodSchemaToCreate),
-  walletControllers.createWalletController
+walletRoute.get(
+  "/",
+  checkAuth(Role.ADMIN),
+  walletControllers.getWalletController
 );
 
-walletRoute.patch(
-  "/add-money/:id",
-  checkAuth(Role.USER, Role.AGENT),
-  requestValidator(walletZodSchemaToAddMoney),
-  walletControllers.addMoneyToWalletController
-);
+// walletRoute.post(
+//   "/create",
+//   requestValidator(walletZodSchemaToCreate),
+//   walletControllers.createWalletController
+// );
+
+// walletRoute.patch(
+//   "/add-money/:id",
+//   checkAuth(Role.USER, Role.AGENT),
+//   requestValidator(walletZodSchemaToAddMoney),
+//   walletControllers.addMoneyToWalletController
+// );
+
+// walletRoute.patch(
+//   "/withdraw-money/:id",
+//   checkAuth(Role.USER, Role.AGENT),
+//   requestValidator(walletZodSchemaToAddMoney),
+//   walletControllers.withdrawMoneyFromWalletController
+// );
 
 walletRoute.patch(
-  "/withdraw-money/:id",
-  checkAuth(Role.USER, Role.AGENT),
-  requestValidator(walletZodSchemaToAddMoney),
-  walletControllers.withdrawMoneyFromWalletController
-);
-
-walletRoute.patch(
-  "/:id",
+  "/block-wallet/:id",
+  checkAuth(Role.ADMIN),
   requestValidator(walletZodSchemaToUpdate),
   walletControllers.updateWalletController
 );

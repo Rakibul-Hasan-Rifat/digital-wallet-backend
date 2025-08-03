@@ -1,5 +1,5 @@
 // {
-//   type: { 
+//   type: {
 //     type: String,
 //     enum: ['topup', 'withdraw', 'send', 'cashin', 'cashout'],
 //   },
@@ -14,18 +14,20 @@
 // }
 
 export enum TransactionType {
-    TOPUP = "TOPUP",
-    WITHDRAW = "WITHDRAW",
-    SEND = "SEND",
-    CASHIN = "CASHIN",
-    CASHOUT = "CASHOUT"
+  SEND = "SEND",
+  TOPUP = "TOPUP",
+  CASHIN = "CASHIN",
+  CASHOUT = "CASHOUT",
+  WITHDRAW = "WITHDRAW",
 }
 
-interface Transaction {
-    type: TransactionType
-    from?: string
-    to?: string
-    initiator?: string
+interface ITransaction {
+  type: TransactionType;
+  amount: number;
+  to?: string | null;
+  from?: string | null;
+  initiator?: string;
+  receiverEmail?: string;
 }
 
-export default Transaction;
+export default ITransaction;
